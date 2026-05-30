@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Petualangan Hitung Perkalian Bersusun! 🚀</title>
+    <style>
+        /* --- Import Font Anak-anak yang Friendly --- */
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
+        /* --- Reset & Base Style --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Fredoka', system-ui, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Layout Container (Strict Mobile Friendly) --- */
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 20px 0px #bae6fd, 0 25px 30px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            border: 4px solid #7dd3fc;
+            position: relative;
+            overflow: hidden;
+            min-height: 580px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header & Navigation Components --- */
+        .header-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            width: 100%;
+        }
+
+        .btn-home {
+            background: #f43f5e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #be123c;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-home:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .title-badge {
+            background-color: #fef08a;
+            border: 2px dashed #ca8a04;
+            padding: 0.4rem 0.8rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #854d0e;
+        }
+
+        /* --- Multipage System --- */
+        .page {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        /* --- Home Page Styles --- */
+        .home-brand {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0284c7;
+            text-shadow: 2px 2px 0px #e0f2fe;
+            margin-bottom: 0.25rem;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .mascot-space {
+            font-size: 4.5rem;
+            text-align: center;
+            margin: 1rem 0;
+            animation: bounce 2s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: auto;
+            margin-bottom: 1rem;
+        }
+
+        .btn-menu {
+            width: 100%;
+            text-align: left;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .btn-menu-calc {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            box-shadow: 0 6px 0 #0369a1;
+        }
+
+        .btn-menu-quiz {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 6px 0 #047857;
+        }
+
+        .btn-menu:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        .btn-menu font-head {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-menu span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* --- Form Inputs & Interactivity --- */
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            background: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 1.2rem;
+            border: 2px solid #e2e8f0;
+        }
+
+        .input-field {
+            padding: 0.5rem;
+            border: 3px solid #cbd5e1;
+            border-radius: 0.75rem;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            outline: none;
+            width: 85px;
+            color: #0f172a;
+            background-color: white;
+            caret-color: transparent;
+            cursor: pointer;
+        }
+
+        .input-field.focused {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        .divider-colon {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        /* --- Kotak Isian Matematika (Skema Bersusun) --- */
+        .box-input-matematika {
+            width: 30px;
+            height: 34px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            border: 2px solid #94a3b8;
+            border-radius: 6px;
+            outline: none;
+            padding: 0;
+            background-color: #ffffff;
+            caret-color: transparent;
+            cursor: pointer;
+        }
+
+        .box-input-matematika.focused {
+            border-color: #ca8a04 !important;
+            background-color: #fef9c3 !important;
+            box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.4);
+        }
+
+        .box-correct {
+            border-color: #10b981 !important;
+            background-color: #d1fae5 !important;
+            color: #065f46 !important;
+        }
+
+        .box-wrong {
+            border-color: #ef4444 !important;
+            background-color: #fee2e2 !important;
+            color: #991b1b !important;
+        }
+
+        /* --- Kode Kelas Warna Edukatif Parsial --- */
+        .digit-p0 { color: #d946ef; } /* Satuan = Magenta / Pink Tua */
+        .digit-p1 { color: #0284c7; } /* Puluhan = Biru langit */
+        .digit-p2 { color: #f59e0b; } /* Ratusan = Oranye/Kuning */
+        .digit-p3 { color: #10b981; } /* Ribuan = Hijau */
+
+        /* Style khusus border untuk input dinamis di latihan bersusun */
+        .box-p0 { border-color: #e879f9; color: #d946ef; }
+        .box-p1 { border-color: #38bdf8; color: #0284c7; }
+        .box-p2 { border-color: #fbbf24; color: #f59e0b; }
+        .box-p3 { border-color: #34d399; color: #10b981; }
+
+        /* --- Action Buttons --- */
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-hitung {
+            flex: 1;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.75rem;
+            border-radius: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .btn-hitung:active { transform: scale(0.95); }
+        .btn-orange { background-color: #f97316; box-shadow: 0 4px 0 #ea580c; }
+        .btn-red { background-color: #ef4444; box-shadow: 0 4px 0 #dc2626; }
+        .btn-blue { background-color: #3b82f6; box-shadow: 0 4px 0 #2563eb; }
+        .btn-green { background-color: #10b981; box-shadow: 0 4px 0 #059669; }
+
+        /* --- Math Sheets Rendering Area --- */
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+            text-align: center;
+        }
+
+        .visual-display-box {
+            display: flex;
+            justify-content: center;
+            background-color: #f8fafc;
+            border: 3px dashed #cbd5e1;
+            padding: 1rem;
+            border-radius: 1.2rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .wrapper-matematika {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; 
+            letter-spacing: 0.15em;
+        }
+
+        .grid-row { display: grid; align-items: center; }
+        .grid-cell {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 32px;
+        }
+
+        .line-hitung {
+            width: 100%;
+            border-bottom: 3px solid #334155;
+            display: inline-block;
+            height: 2px;
+            margin: 2px 0;
+        }
+        .sign-operator { font-weight: bold; display: flex; justify-content: center; align-items: center; }
+
+        .hasil-eksplisit {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #111827;
+            background-color: #fef9c3;
+            padding: 0.6rem 1.2rem;
+            border-radius: 1rem;
+            display: inline-block;
+            margin-top: 0.25rem;
+            border: 2px solid #fef08a;
+            text-align: center;
+        }
+
+        .soal-container {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.8rem;
+            padding: 0.6rem;
+            background-color: #f8fafc;
+            border-radius: 1rem;
+            border: 3px dashed #cbd5e1;
+            color: #0284c7;
+        }
+
+        .feedback-box {
+            padding: 0.75rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        .feedback-success { background-color: #d1fae5; color: #065f46; border: 2px solid #a7f3d0; }
+        .feedback-wrong { background-color: #fee2e2; color: #991b1b; border: 2px solid #fca5a5; }
+
+        /* --- Custom Multi-color Numpad --- */
+        .numpad-container {
+            background-color: #f1f5f9;
+            border-top: 3px solid #cbd5e1;
+            padding: 0.6rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-top: auto;
+            border-radius: 1.2rem;
+        }
+
+        .num-btn {
+            border: none;
+            padding: 0.75rem 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.05s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .num-btn:active {
+            transform: translateY(3px);
+            box-shadow: none !important;
+        }
+
+        /* Skema Warna Tombol Ceria Numpad */
+        .btn-c1 { background-color: #ff7043; box-shadow: 0 4px 0 #d84315; }
+        .btn-c2 { background-color: #26a69a; box-shadow: 0 4px 0 #00695c; }
+        .btn-c3 { background-color: #42a5f5; box-shadow: 0 4px 0 #1565c0; }
+        .btn-c4 { background-color: #ab47bc; box-shadow: 0 4px 0 #6a1b9a; }
+        .btn-c5 { background-color: #ffca28; box-shadow: 0 4px 0 #ff8f00; color: #5d4037; }
+        .btn-action-del { background-color: #ef5350; box-shadow: 0 4px 0 #c62828; grid-column: span 2; font-size: 1.1rem; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="page-home" class="page active">
+            <div class="home-brand">
+                <h2 class="title">Yuk Berhitung!</h2>
+                <p class="subtitle">Belajar Perkalian Bersusun Panjang</p>
+            </div>
+            
+            <div class="mascot-space"><img src="https://i.pinimg.com/1200x/f3/af/59/f3af59354f009c8ab3ab5dfa2f4d767e.jpg" height="150px"></div>
+        
+            <div class="menu-list">
+                <button class="btn-menu btn-menu-calc" onclick="navigateTo('calculator')">
+                    <font-head>🧮 Kalkulator Pintar</font-head>
+                    <span>Masukkan angka dan lihat penyelesaiannya</span>
+                </button>
+                <button class="btn-menu btn-menu-quiz" onclick="navigateTo('exercise')">
+                    <font-head>🎯 Latihan</font-head>
+                    <span>Uji kemampuanmu dengan mengerjakan soal</span>
+                </button>
+                <div style="text-align: center; font-style: italic; font-size: 1rem; margin: 10px; color:blue">
+                    @2026 O'Cre Studio
+                </div>
+            </div>
+        </div>
+
+        <div id="page-calculator" class="page">
+            <div class="header-nav">
+                <button class="btn-home" onclick="navigateTo('home')">🏠︎ Menu</button>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="kaliAtas" readonly class="input-field" placeholder="a" onclick="focusInput(this, 'calc')">
+                <span class="divider-colon">×</span>
+                <input type="text" id="kaliBawah" readonly class="input-field" placeholder="b" onclick="focusInput(this, 'calc')">
+                <span class="divider-colon">= ....</span>
+            </div>
+
+            <div class="button-group">
+                <button onclick="hitungPerkalianBersusun()" class="btn-hitung btn-orange">HITUNG 🚀</button>
+                <button onclick="resetPerkalian()" class="btn-hitung btn-red">Bersihkan ✨</button>
+            </div>
+
+            <div id="errorAlertKali" class="feedback-box feedback-wrong hidden"></div>
+            
+            <div id="hasilContainerKali" class="hidden" style="display: flex; flex-direction: column;">
+                <h3 class="section-title">Skema Jalan Bersusun:</h3>
+                <div class="visual-display-box">
+                    <div id="wrapperPerkalian" class="wrapper-matematika"></div>
+                </div>
+                <div style="text-align: center;">
+                    <div id="hasilEksplisitKali" class="hasil-eksplisit"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-exercise" class="page">
+            <div class="header-nav">
+                <button class="btn-home" onclick="navigateTo('home')">🏠︎ Menu</button>
+            </div>
+
+            <div class="soal-container"><span id="soalKaliAtas">0</span> x <span id="soalKaliBawah">0</span> = ???</div>
+            <p style="margin-bottom: 0.6rem; color: #64748b; font-size: 0.85rem; text-align: center; font-style: italic;">💡 Tips: Perhatikan warna bingkai kotak sesuai warna pengalinya!</p>
+            
+            <div class="visual-display-box" style="background-color: #ffffff; border: 3px solid #cbd5e1;">
+                <div id="wrapperPerkalianLatihan" class="wrapper-matematika"></div>
+            </div>
+
+            <div id="feedbackKaliLatihan" class="feedback-box hidden"></div>
+
+            <div class="button-group">
+                <button onclick="cekJawabanMati('.box-kali-g')" class="btn-green btn-hitung">Periksa Skor ✔️</button>
+                <button onclick="buatSoalKaliAcak()" class="btn-blue btn-hitung">Minta Soal Baru 🎲</button>
+            </div>
+        </div>
+
+        <div id="global-numpad" class="numpad-container hidden">
+            <button class="num-btn btn-c1" onclick="pressNum('1')">1</button>
+            <button class="num-btn btn-c2" onclick="pressNum('2')">2</button>
+            <button class="num-btn btn-c3" onclick="pressNum('3')">3</button>
+            <button class="num-btn btn-c4" onclick="pressNum('4')">4</button>
+            <button class="num-btn btn-c5" onclick="pressNum('5')">5</button>
+            <button class="num-btn btn-c1" onclick="pressNum('6')">6</button>
+            <button class="num-btn btn-c2" onclick="pressNum('7')">7</button>
+            <button class="num-btn btn-c3" onclick="pressNum('8')">8</button>
+            <button class="num-btn btn-c4" onclick="pressNum('9')">9</button>
+            <button class="num-btn btn-c5" onclick="pressNum('0')">0</button>
+            <button class="num-btn btn-action-del" onclick="pressNum('DEL')">⌫ Hapus</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentFocusedElement = null;
+
+        // --- SISTEM MULTIPAGE ---
+        function navigateTo(pageId) {
+            document.getElementById('global-numpad').classList.add('hidden');
+            if(currentFocusedElement) currentFocusedElement.classList.remove('focused');
+            currentFocusedElement = null;
+
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            
+            if (pageId === 'home') {
+                document.getElementById('page-home').classList.add('active');
+            } else if (pageId === 'calculator') {
+                document.getElementById('page-calculator').classList.add('active');
+                resetPerkalian();
+            } else if (pageId === 'exercise') {
+                document.getElementById('page-exercise').classList.add('active');
+                buatSoalKaliAcak();
+            }
+        }
+
+        // --- SENDER MANAGEMEN KLIK INPUT & NUMPAD ---
+        function focusInput(el, mode) {
+            if (currentFocusedElement) {
+                currentFocusedElement.classList.remove('focused');
+            }
+            
+            currentFocusedElement = el;
+            currentFocusedElement.classList.add('focused');
+            document.getElementById('global-numpad').classList.remove('hidden');
+        }
+
+        function pressNum(num) {
+            if (!currentFocusedElement) return;
+
+            const isMainField = currentFocusedElement.classList.contains('input-field');
+            const maxChars = isMainField ? 3 : 1;
+
+            if (num === 'DEL') {
+                if (isMainField) {
+                    currentFocusedElement.value = currentFocusedElement.value.slice(0, -1);
+                } else {
+                    currentFocusedElement.value = "";
+                }
+            } else {
+                if (isMainField) {
+                    if (currentFocusedElement.value.length < maxChars) {
+                        currentFocusedElement.value += num;
+                    }
+                } else {
+                    currentFocusedElement.value = num;
+                }
+            }
+
+            if(isMainField) {
+                document.getElementById('hasilContainerKali').classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if(currentFocusedElement) {
+                e.preventDefault();
+            }
+        });
+
+        // --- VALIDATOR GAME LATIHAN ---
+        function cekJawabanMati(selectorKelas) {
+            const inputs = document.querySelectorAll(selectorKelas);
+            let semuaBenar = true;
+            let adaKosong = false;
+
+            inputs.forEach(input => {
+                const userVal = input.value.trim();
+                const correctVal = input.getAttribute('data-ans');
+
+                if(correctVal === "") return;
+
+                if (userVal === '') {
+                    adaKosong = true;
+                    const pClass = input.classList.contains('box-p0') ? 'box-p0' : (input.classList.contains('box-p1') ? 'box-p1' : (input.classList.contains('box-p2') ? 'box-p2' : 'box-p3'));
+                    input.className = `box-input-matematika ${selectorKelas.substring(1)} ${pClass} box-wrong`;
+                    semuaBenar = false;
+                } else if (userVal === correctVal) {
+                    input.className = `box-input-matematika ${selectorKelas.substring(1)} box-correct`;
+                } else {
+                    const pClass = input.classList.contains('box-p0') ? 'box-p0' : (input.classList.contains('box-p1') ? 'box-p1' : (input.classList.contains('box-p2') ? 'box-p2' : 'box-p3'));
+                    input.className = `box-input-matematika ${selectorKelas.substring(1)} ${pClass} box-wrong`;
+                    semuaBenar = false;
+                }
+            });
+
+            const feedback = document.getElementById('feedbackKaliLatihan');
+            feedback.classList.remove('hidden');
+
+            if (adaKosong) {
+                feedback.textContent = "⚠️ Oh oow, masih ada kotak yang kosong!";
+                feedback.className = "feedback-box feedback-wrong";
+            } else if (semuaBenar) {
+                feedback.textContent = "🎉 Horeee! Kamu hebat, semua jawabanmu BENAR!";
+                feedback.className = "feedback-box feedback-success";
+            } else {
+                feedback.textContent = "❌ Wah, masih ada jalur hitung yang keliru. Coba lagi yuk!";
+                feedback.className = "feedback-box feedback-wrong";
+            }
+        }
+
+        // --- HELPER STRUKTUR GENERATOR GRID ---
+        function generateRowDOM(isiKolomArray, totalKolom) {
+            const row = document.createElement('div');
+            row.className = "grid-row";
+            row.style.gridTemplateColumns = `repeat(${totalKolom}, minmax(1.5rem, max-content))`;
+            for (let i = 0; i < totalKolom; i++) {
+                const cell = document.createElement('div');
+                cell.className = "grid-cell";
+                if (isiKolomArray[i]) cell.innerHTML = isiKolomArray[i];
+                row.appendChild(cell);
+            }
+            return row;
+        }
+
+        // --- LOGIKA UTAMA GENERATOR PERKALIAN BERSUSUN DENGAN KODE WARNA ---
+        function generatePerkalianDOM(A, B, targetWrapper, isInteractive) {
+            targetWrapper.innerHTML = ''; 
+            const strA = A.toString();
+            const strB = B.toString();
+            const lenA = strA.length;
+            const lenB = strB.length;
+            
+            let perkalianParsial = [];
+            for (let i = lenB - 1; i >= 0; i--) {
+                perkalianParsial.push(parseInt(strB[i]) * A); 
+            }
+            const totalMaxResultStr = (A * B).toString().length;
+            
+            const maxKolomAngka = Math.max(lenA, lenB, totalMaxResultStr);
+            const totalKolom = maxKolomAngka + 1; 
+
+            // Generator Komponen Karakter dengan Penyelarasan Kode Warna Eksplisit
+            function getComp(char, realAns, idxBaris) {
+                if (char === "") {
+                    if(!isInteractive) return "";
+                    return `<div style="width:30px; height:34px; margin: 3px"></div>`;
+                }
+                
+                if(!isInteractive) {
+                    return idxBaris !== undefined ? `<span class="digit-p${idxBaris}">${char}</span>` : char;
+                }
+                
+                const colorClass = idxBaris !== undefined ? `box-p${idxBaris}` : '';
+                return `<input type="text" readonly class="box-input-matematika box-kali-g ${colorClass}" data-ans="${realAns}" onclick="focusInput(this, 'exercise')">`;
+            }
+
+            // Baris Angka Atas (A)
+            let rA = Array(totalKolom).fill("");
+            for(let i=0; i<lenA; i++) rA[totalKolom - 2 - i] = strA[lenA - 1 - i];
+            targetWrapper.appendChild(generateRowDOM(rA, totalKolom));
+
+            // Baris Angka Bawah (B)
+            let rB = Array(totalKolom).fill("");
+            for(let i=0; i<lenB; i++) {
+                let digitPosFromRight = i; 
+                let charDigit = strB[lenB - 1 - i];
+                rB[totalKolom - 2 - i] = `<span class="digit-p${digitPosFromRight}">${charDigit}</span>`;
+            }
+            targetWrapper.appendChild(generateRowDOM(rB, totalKolom));
+
+            // Garis Pembatas Pertama & Simbol Kali
+            let rLine1 = Array(totalKolom).fill("");
+            for(let i=0; i<totalKolom; i++) rLine1[i] = `<span class="line-hitung"></span>`;
+            rLine1[totalKolom - 1] = `<span class="sign-operator" style="color:#ef4444;">×</span>`;
+            targetWrapper.appendChild(generateRowDOM(rLine1, totalKolom));
+
+            // Baris Hasil Parsial
+            if (lenB > 1) {
+                perkalianParsial.forEach((nilaiParsial, idx) => {
+                    let strParsial = nilaiParsial.toString();
+                    let rParsial = Array(totalKolom).fill("");
+                    let shiftLeft = idx; 
+
+                    for(let i=0; i < strParsial.length; i++) {
+                        let digitChar = strParsial[strParsial.length - 1 - i];
+                        rParsial[totalKolom - 2 - shiftLeft - i] = getComp(digitChar, digitChar, idx);
+                    }
+                    for(let s=0; s<shiftLeft; s++) {
+                        rParsial[totalKolom - 2 - s] = getComp("", "");
+                    }
+                    targetWrapper.appendChild(generateRowDOM(rParsial, totalKolom));
+                });
+
+                // Garis Akumulasi Penambahan
+                let rLine2 = Array(totalKolom).fill("");
+                for(let i=0; i<totalKolom; i++) rLine2[i] = `<span class="line-hitung"></span>`;
+                rLine2[totalKolom - 1] = `<span class="sign-operator" style="color:#10b981;">+</span>`;
+                targetWrapper.appendChild(generateRowDOM(rLine2, totalKolom));
+            } else {
+                perkalianParsial.forEach((nilaiParsial, idx) => {
+                    let strParsial = nilaiParsial.toString();
+                    let rParsial = Array(totalKolom).fill("");
+                    for(let i=0; i < strParsial.length; i++) {
+                        let digitChar = strParsial[strParsial.length - 1 - i];
+                        rParsial[totalKolom - 2 - i] = getComp(digitChar, digitChar, 0);
+                    }
+                    targetWrapper.appendChild(generateRowDOM(rParsial, totalKolom));
+                });
+                return; 
+            }
+
+            // Hasil Akhir Total (Koreksi variabel totalKolom di sini agar tidak macet)
+            let strTotal = (A * B).toString();
+            let rTotal = Array(totalKolom).fill("");
+            for(let i=0; i<strTotal.length; i++) {
+                let digitChar = strTotal[strTotal.length - 1 - i];
+                rTotal[totalKolom - 2 - i] = getComp(digitChar, digitChar); 
+            }
+            targetWrapper.appendChild(generateRowDOM(rTotal, totalKolom));
+        }
+
+        // --- ENGINE FITUR KALKULATOR ---
+        function hitungPerkalianBersusun() {
+            const valA = document.getElementById('kaliAtas').value;
+            const valB = document.getElementById('kaliBawah').value;
+            const A = parseInt(valA);
+            const B = parseInt(valB);
+            const err = document.getElementById('errorAlertKali');
+            const wrapper = document.getElementById('wrapperPerkalian');
+            
+            err.classList.add('hidden'); 
+            document.getElementById('hasilContainerKali').classList.add('hidden');
+
+            if(!valA || !valB || isNaN(A) || isNaN(B) || A <= 0 || B <= 0) { 
+                err.textContent = "⚠️ Isilah kedua kotak angka terlebih dahulu ya!"; 
+                err.classList.remove('hidden'); 
+                return; 
+            }
+            
+            generatePerkalianDOM(A, B, wrapper, false);
+            document.getElementById('hasilEksplisitKali').innerHTML = `${A} × ${B} = <span style="color:#0284c7">${A * B}</span>`;
+            document.getElementById('hasilContainerKali').classList.remove('hidden');
+            
+            document.getElementById('global-numpad').classList.add('hidden');
+            if(currentFocusedElement) currentFocusedElement.classList.remove('focused');
+        }
+
+        function resetPerkalian() { 
+            document.getElementById('kaliAtas').value = ''; 
+            document.getElementById('kaliBawah').value = ''; 
+            document.getElementById('wrapperPerkalian').innerHTML = ''; 
+            document.getElementById('errorAlertKali').classList.add('hidden');
+            document.getElementById('hasilContainerKali').classList.add('hidden'); 
+            document.getElementById('global-numpad').classList.add('hidden');
+            if(currentFocusedElement) currentFocusedElement.classList.remove('focused');
+            currentFocusedElement = null;
+        }
+        
+        // --- ENGINE FITUR GAME LATIHAN ---
+        function buatSoalKaliAcak() {
+            document.getElementById('feedbackKaliLatihan').classList.add('hidden');
+            document.getElementById('global-numpad').classList.add('hidden');
+            currentFocusedElement = null;
+
+            let top = Math.floor(Math.random() * 85) + 15; 
+            let bottom = Math.floor(Math.random() * 80) + 12; 
+
+            document.getElementById('soalKaliAtas').textContent = top;
+            document.getElementById('soalKaliBawah').textContent = bottom;
+            
+            const wrap = document.getElementById('wrapperPerkalianLatihan'); 
+            generatePerkalianDOM(top, bottom, wrap, true);
+        }
+
+        window.onload = function() {
+            navigateTo('home');
+        };
+    </script>
+</body>
+</html>
